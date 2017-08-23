@@ -3,6 +3,7 @@
 
 using System.Threading;
 using System.Threading.Tasks;
+using System.Transactions;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Internal;
@@ -44,6 +45,10 @@ namespace Microsoft.EntityFrameworkCore.Storage.Internal
         public virtual void RollbackTransaction() => _logger.TransactionIgnoredWarning();
 
         public virtual IDbContextTransaction CurrentTransaction => null;
+        public virtual Transaction EnlistedTransaction => null;
+        public virtual void EnlistTransaction(Transaction transaction)
+        {
+        }
 
         public virtual void ResetState()
         {

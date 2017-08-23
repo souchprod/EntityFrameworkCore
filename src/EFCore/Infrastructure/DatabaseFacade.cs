@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Transactions;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Utilities;
@@ -138,11 +139,24 @@ namespace Microsoft.EntityFrameworkCore.Infrastructure
             => TransactionManager.RollbackTransaction();
 
         /// <summary>
+        ///     Specifies an existing <see cref="Transaction" /> to be used for database operations.
+        /// </summary>
+        /// <param name="transaction"> The transaction to be used. </param>
+        public virtual void EnlistTransaction([CanBeNull] Transaction transaction)
+            => TransactionManager.EnlistTransaction(transaction);
+
+        /// <summary>
         ///     Creates an instance of the configured <see cref="IExecutionStrategy" />.
         /// </summary>
         /// <returns>An <see cref="IExecutionStrategy" /> instance.</returns>
         public virtual IExecutionStrategy CreateExecutionStrategy()
             => ExecutionStrategyFactory.Create();
+
+        /// <summary>
+        ///     The currently enlisted transaction.
+        /// </summary>
+        public virtual Transaction EnlistedTransaction
+            => TransactionManager.EnlistedTransaction;
 
         /// <summary>
         ///     <para>
